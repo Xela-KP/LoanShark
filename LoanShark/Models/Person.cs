@@ -3,10 +3,31 @@ namespace LoanShark.Models
 {
 	public class Person
 	{
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+        private List<FinancialLiability> _financialLiabilities = new List<FinancialLiability>();
+		public string Name { get; set; }
 		public string Mobile { get; set; }
-		public string Email { get; set; }
-		LinkedList<FinancialLiability> FinancialLiabilities = new LinkedList<FinancialLiability>();
+		public void AddLiability(FinancialLiability liability)
+		{
+			_financialLiabilities.Add(liability);
+		}
+		public double GetNetLiabilityAmount()
+		{
+			double total = 0;
+			foreach(FinancialLiability liability in _financialLiabilities)
+			{
+				switch (liability)
+				{
+					case Debt:
+						total += liability.Amount;
+						break;
+					case Loan:
+						total -= liability.Amount;
+						break;
+					default:
+						break;
+				}
+			}
+			return total;
+		}
 	}
 }
